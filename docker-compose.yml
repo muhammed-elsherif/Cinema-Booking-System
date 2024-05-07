@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mysqlDB:
@@ -13,13 +13,11 @@ services:
       - mysql_data:/var/lib/mysql
 
   app:
-    build: .
+    build: Cinema-Booking-System/
     ports:
       - 8080:8080
     depends_on:
       - mysqlDB
 
-
 volumes:
   mysql_data:
-
