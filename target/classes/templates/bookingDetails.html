@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Booking</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+
+      .message {
+        text-align: center;
+        font-size: 24px;
+        color: #bd7f28;
+      }
+      .booking-form {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+        font-size: 16px;
+        color: #444;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #14b5cb;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #14b5cb;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .navbar-custom {
+        background-color: #14b5cb;
+      }
+
+      .navbar-custom .navbar-brand,
+      .navbar-custom .navbar-nav .nav-link {
+        color: white;
+      }
+
+      .navbar-custom .nav-link {
+        text-decoration: none;
+      }
+      .footer {
+        background-color: #1098aa;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .footer a {
+        color: white;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">CINEMA</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/available_movies}">Movies</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/my_movies}">My Movies</a>
+            </li>
+          </ul>
+
+          <span sec:authorize="isAuthenticated">
+            <a class="nav-link" th:href="@{/logout}" style="color: white; text-decoration: none"
+              >Logout</a
+            >
+          </span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="booking-form">
+      <h2 style="text-align: center; margin-bottom: 30px">Book Your Tickets</h2>
+      <form action="/book" method="post">
+        <div class="message">
+          <p
+            th:if="${message} != null"
+            th:text="${message}"
+            style="font-size: 25px; color: #bd7f28"
+          ></p>
+        </div>
+
+        <div class="form-group">
+          <div class="form-group">
+            <label for="ticketType">Movie ID:</label>
+          </div>
+          <label for="title">Movie Title:</label>
+          <select id="title" name="title">
+            <option th:each="name : ${titles}" th:value="${name}" th:text="${name}"></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cinema">Choose Cinema:</label>
+          <select id="cinema" name="cinema">
+            <option th:each="cinema : ${cinemas}" th:value="${cinema}" th:text="${cinema}"></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="date">Choose Date:</label>
+          <select id="date" name="date">
+            <option th:each="date : ${dates}" th:value="${date}" th:text="${date}"></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="showtime">Choose Showtime:</label>
+          <select id="showtime" name="showTime">
+            <option
+              th:each="showTime : ${showtimes}"
+              th:value="${showTime}"
+              th:text="${showTime}"
+            ></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ticketType">Choose Ticket Type:</label>
+          <select id="ticketType" name="ticketType">
+            <option
+              th:each="ticketType : ${ticketTypes}"
+              th:value="${ticketType}"
+              th:text="${ticketType}"
+            ></option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <i class="fas fa-lock"></i>
+          <label for="ticketType">Number Of Tickets:</label>
+          <input type="number" name="num" placeholder=" Enter Number Of Tickets" required />
+        </div>
+
+        <div style="text-align: center">
+          <button
+            type="submit"
+            style="background-color: #d59945; border: none; color: white"
+            class="btn btn-info"
+          >
+            Book Now
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h4>About Us</h4>
+            <p>Experience the magic of cinema with our convenient booking system.</p>
+          </div>
+          <div class="col-md-4">
+            <h4>Contact Us</h4>
+            <p>Cairo, Egypt</p>
+            <p>Email: support@united_media_services.com</p>
+            <p>Phone: +123 456 7890</p>
+          </div>
+          <div class="col-md-4">
+            <h4>Follow Us</h4>
+            <p>Stay updated on our latest releases and promotions:</p>
+            <ul class="list-unstyled">
+              <li><a href="#">Facebook</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Instagram</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p class="text-center">&copy; 2024 United Media Services. All Rights Reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
